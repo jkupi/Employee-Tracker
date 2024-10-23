@@ -1,5 +1,6 @@
 import inquirer from "inquirer";
 import { viewAllDepartments } from "./services/departmentService.js";
+import { viewAllRoles } from "./services/roleService.js";
 
 const startCli = (): void => {
   inquirer
@@ -26,6 +27,7 @@ const startCli = (): void => {
             viewAllDepartments();
           break;
         case "View all roles":
+          viewAllRoles();
           break;
         case "View all employees":
           break;
