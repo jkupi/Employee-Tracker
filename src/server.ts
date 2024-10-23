@@ -1,3 +1,9 @@
 import { connectToDb } from './connection.js';
+import { startCli } from './cli.js';
 
-await connectToDb();
+const start = async () => {
+    await connectToDb();
+    startCli();
+}
+
+start();
