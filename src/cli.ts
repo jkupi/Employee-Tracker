@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import { viewAllDepartments } from "./services/departmentService.js";
 
 const startCli = (): void => {
   inquirer
@@ -22,6 +23,7 @@ const startCli = (): void => {
     .then((answers) => {
       switch (answers.StartUpPrompt) {
         case "View all departments":
+            viewAllDepartments();
           break;
         case "View all roles":
           break;
@@ -38,7 +40,6 @@ const startCli = (): void => {
         case "Quit":
             console.log("Bye Bye!");
             process.exit();
-            break;
         default:
             console.log("how did you even get here??")
       }
