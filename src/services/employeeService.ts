@@ -1,9 +1,8 @@
 import { pool } from "../connection.js";
 import { startCli } from "../cli.js";
 
-export function viewAllEmployees(): void {
-  pool
-    .query(
+export async function viewAllEmployees(): Promise<void> {
+  await pool.query(
       `
         SELECT employee.id, employee.first_name, employee.last_name, role.title AS role, department.name AS department, role.salary, manager.first_name || ' ' || manager.last_name AS manager
         FROM employee

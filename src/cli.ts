@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
-import { viewAllDepartments, addDepartment } from "./services/departmentService.js";
-import { viewAllRoles } from "./services/roleService.js";
+import { viewAllDepartments, addDepartment, getDepartments } from "./services/departmentService.js";
+import { viewAllRoles, addRole } from "./services/roleService.js";
 import { viewAllEmployees } from "./services/employeeService.js";
 
 const startCli = (): void => {
@@ -37,6 +37,7 @@ const startCli = (): void => {
           addDepartmentPrompt();
           break;
         case "Add a role":
+          addRolePrompt();
           break;
         case "Add an employee":
           break;
@@ -63,6 +64,35 @@ const addDepartmentPrompt = (): void => {
     .then((answer) => {
       const { departmentName } = answer;
       addDepartment(departmentName);
+    });
+}
+
+const addRolePrompt = async (): Promise<void> => {
+  const departmentChoices = await getDepartments();
+  // console.log(departmentChoices);
+
+  await inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "roleName",
+        message: "Enter name of role:",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Enter salary for this role:",
+      },
+      {
+        type: "list",
+        name: "department_id",
+        message: "Which department does the role belong to?",
+        choices: departmentChoices,
+      },
+    ])
+    .then((answer) => {
+      const { roleName, salary, department_id } = answer;
+      addRole(roleName, salary, department_id);
     });
 }
 
