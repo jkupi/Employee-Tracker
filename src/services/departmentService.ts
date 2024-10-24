@@ -8,5 +8,19 @@ export function viewAllDepartments(): void {
             console.table(result.rows);
             startCli();
         })
+}
 
+export function addDepartment(departmentName: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO department (name) VALUES ($1)';
+        pool.query(query, [departmentName], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log("Department added!");
+                resolve();
+            }
+        });
+        startCli();
+    });
 }
