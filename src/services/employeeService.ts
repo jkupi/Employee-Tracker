@@ -30,3 +30,17 @@ export async function getManagers() {
       value: manager.id
   }));
 }
+
+export async function getEmployees() {
+  const result = await pool.query("SELECT id, first_name, last_name FROM employee");
+  return result.rows.map(employee => ({
+    name: `${employee.first_name} ${employee.last_name}`,
+    value: employee.id
+  }));
+}
+
+export async function updateEmployeeRole(employee_id: number, role_id: number) {
+  const query = "UPDATE employee SET role_id = $1 WHERE id = $2";
+  await pool.query(query, [role_id, employee_id]);
+  startCli();
+}

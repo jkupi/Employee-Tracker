@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import { viewAllDepartments, addDepartment, getDepartments } from "./services/departmentService.js";
 import { viewAllRoles, addRole, getRoles } from "./services/roleService.js";
-import { viewAllEmployees, getManagers, addEmployee } from "./services/employeeService.js";
+import { viewAllEmployees, getManagers, getEmployees, addEmployee, updateEmployeeRole } from "./services/employeeService.js";
 
 const startCli = async (): Promise<void> => {
   await inquirer
@@ -132,6 +132,29 @@ const addEmployeePrompt = async (): Promise<void> => {
     });
 }
 
+const updateEmployeeRolePrompt = async (): Promise<void> => {
+  const roleChoices = await getRoles();
+  const employeeChoices = await getEmployees();
 
+  await inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "employee_id",
+        message: "Which employee's role do you want to update?",
+        choices: employeeChoices,
+      },
+      {
+        type: "list",
+        name: "role_id",
+        message: "Which role do want to assign to the selected employee?",
+        choices: roleChoices,
+      },
+    ])
+    .then((answer) => {
+      const { employee_id, role_id } = answer;
+      updateEmployeeRole(employee_id, role_id);
+    });
+}
 
 export { startCli };
