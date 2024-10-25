@@ -16,3 +16,17 @@ export async function viewAllEmployees(): Promise<void> {
       startCli();
     });
 }
+
+export async function addEmployee(firstName: string, lastName: string, role_id: number, manager_id: number): Promise<void> {
+  const query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)";
+  await pool.query(query, [firstName, lastName, role_id, manager_id]);
+  startCli();
+}
+
+export async function getManagers() {
+  const result = await pool.query("SELECT id, first_name || ' ' || last_name AS name FROM employee WHERE manager_id IS NULL");
+  return result.rows.map(manager => ({
+      name: manager.name,
+      value: manager.id
+  }));
+}

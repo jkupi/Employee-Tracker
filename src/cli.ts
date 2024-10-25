@@ -1,10 +1,10 @@
 import inquirer from "inquirer";
 import { viewAllDepartments, addDepartment, getDepartments } from "./services/departmentService.js";
-import { viewAllRoles, addRole } from "./services/roleService.js";
-import { viewAllEmployees } from "./services/employeeService.js";
+import { viewAllRoles, addRole, getRoles } from "./services/roleService.js";
+import { viewAllEmployees, getManagers, addEmployee } from "./services/employeeService.js";
 
-const startCli = (): void => {
-  inquirer
+const startCli = async (): Promise<void> => {
+  await inquirer
     .prompt([
       {
         type: "list",
@@ -40,8 +40,10 @@ const startCli = (): void => {
           addRolePrompt();
           break;
         case "Add an employee":
+          addEmployeePrompt();
           break;
         case "Update an employee role":
+          updateEmployeeRolePrompt();
           break;
         case "Quit":
             console.log("Bye Bye!");
@@ -52,8 +54,8 @@ const startCli = (): void => {
     });
 };
 
-const addDepartmentPrompt = (): void => {
-  inquirer
+const addDepartmentPrompt = async (): Promise<void> => {
+  await inquirer
     .prompt([
       {
         type: "input",
@@ -69,7 +71,6 @@ const addDepartmentPrompt = (): void => {
 
 const addRolePrompt = async (): Promise<void> => {
   const departmentChoices = await getDepartments();
-  // console.log(departmentChoices);
 
   await inquirer
     .prompt([
@@ -95,5 +96,42 @@ const addRolePrompt = async (): Promise<void> => {
       addRole(roleName, salary, department_id);
     });
 }
+
+const addEmployeePrompt = async (): Promise<void> => {
+  const roleChoices = await getRoles();
+  const managerChoices = await getManagers();
+
+  await inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "What is the first name of the employee:",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "What is the last name of the employee:",
+      },
+      {
+        type: "list",
+        name: "role_id",
+        message: "What is the employee's role?",
+        choices: roleChoices,
+      },
+      {
+        type: "list",
+        name: "manager_id",
+        message: "Who is the employee's manager?",
+        choices: [{name: "none", value: null}, ...managerChoices]
+      },
+    ])
+    .then((answer) => {
+      const { firstName, lastName, role_id, manager_id } = answer;
+      addEmployee(firstName, lastName, role_id, manager_id);
+    });
+}
+
+
 
 export { startCli };

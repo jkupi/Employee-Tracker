@@ -26,3 +26,11 @@ export async function addRole(roleName: string, salary: number, deptId: number):
         startCli();
     });
 }
+
+export async function getRoles() {
+    const result = await pool.query("SELECT id, title FROM role");
+    return result.rows.map(role => ({
+        name: role.title,
+        value: role.id
+    }));
+}

@@ -14,19 +14,6 @@ export async function addDepartment(departmentName: string): Promise<void> {
     pool.query(query, [departmentName]);
     console.log("Department added!");
     startCli();
-    
-    // return new Promise((resolve, reject) => {
-    //     const query = 'INSERT INTO department (name) VALUES ($1)';
-    //     pool.query(query, [departmentName], (err) => {
-    //         if (err) {
-    //             reject(err);
-    //         } else {
-    //             resolve();
-    //         }
-    //         console.log("Department added!");
-    //     });
-    //     startCli();
-    // });
 }
 
 export async function getDepartments() {
