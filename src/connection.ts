@@ -3,6 +3,7 @@ import pg from "pg";
 dotenv.config();
 const { Pool } = pg;
 
+// creating connection using .env variables
 const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -11,6 +12,7 @@ const pool = new Pool({
   port: 5432,
 });
 
+//establish connection to database
 const connectToDb = async () => {
   try {
     await pool.connect();

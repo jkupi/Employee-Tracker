@@ -1,6 +1,7 @@
 import { pool } from "../connection.js";
 import { startCli } from "../cli.js";
 
+// retrieves and displays all employees 
 export async function viewAllEmployees(): Promise<void> {
   await pool.query(
       `
@@ -17,12 +18,14 @@ export async function viewAllEmployees(): Promise<void> {
     });
 }
 
+// adds employee to database with given name, role, and manager
 export async function addEmployee(firstName: string, lastName: string, role_id: number, manager_id: number): Promise<void> {
   const query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)";
   await pool.query(query, [firstName, lastName, role_id, manager_id]);
   startCli();
 }
 
+// function to get a list of all managers for use in other prompts
 export async function getManagers() {
   const result = await pool.query("SELECT id, first_name || ' ' || last_name AS name FROM employee WHERE manager_id IS NULL");
   return result.rows.map(manager => ({
@@ -31,6 +34,7 @@ export async function getManagers() {
   }));
 }
 
+// function to get a list of all employees for use in other prompts
 export async function getEmployees() {
   const result = await pool.query("SELECT id, first_name, last_name FROM employee");
   return result.rows.map(employee => ({
@@ -39,6 +43,7 @@ export async function getEmployees() {
   }));
 }
 
+// updates employees role with specified role
 export async function updateEmployeeRole(employee_id: number, role_id: number) {
   const query = "UPDATE employee SET role_id = $1 WHERE id = $2";
   await pool.query(query, [role_id, employee_id]);

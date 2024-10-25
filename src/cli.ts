@@ -3,6 +3,7 @@ import { viewAllDepartments, addDepartment, getDepartments } from "./services/de
 import { viewAllRoles, addRole, getRoles } from "./services/roleService.js";
 import { viewAllEmployees, getManagers, getEmployees, addEmployee, updateEmployeeRole } from "./services/employeeService.js";
 
+// default prompt
 const startCli = async (): Promise<void> => {
   await inquirer
     .prompt([
@@ -54,6 +55,7 @@ const startCli = async (): Promise<void> => {
     });
 };
 
+// prompt for adding department 
 const addDepartmentPrompt = async (): Promise<void> => {
   await inquirer
     .prompt([
@@ -69,6 +71,7 @@ const addDepartmentPrompt = async (): Promise<void> => {
     });
 }
 
+// prompt for adding role 
 const addRolePrompt = async (): Promise<void> => {
   const departmentChoices = await getDepartments();
 
@@ -97,6 +100,7 @@ const addRolePrompt = async (): Promise<void> => {
     });
 }
 
+// prompt for adding employee
 const addEmployeePrompt = async (): Promise<void> => {
   const roleChoices = await getRoles();
   const managerChoices = await getManagers();
@@ -132,6 +136,7 @@ const addEmployeePrompt = async (): Promise<void> => {
     });
 }
 
+// prompt for updating an employee
 const updateEmployeeRolePrompt = async (): Promise<void> => {
   const roleChoices = await getRoles();
   const employeeChoices = await getEmployees();
